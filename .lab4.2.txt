@@ -1,0 +1,33 @@
+﻿1. จงเขียนโปรแกรมเก็บข้อมูลชื่อจังหวัดของภาคอีสาน และจำนวนประชากร (ชาย หญิง) ลงใน EEPROM
+โดยป้อนข้อมูลผ่าน serial monitor วนลูปรับค่าแต่ละจังหวัดจนครบ ข้อมูลของแต่ละจังหวัดเก็บเป็น 
+struct provinces {
+  char name[35];
+  long male;
+  long female;
+};
+
+2. แล้วเขียนโปรแกรมอ่านออกมาจาก EEPROM แสดงที่ serial monitor ครบทุกจังหวัด ในรูปแบบ
+
+
+<-- ข้อมูล --> 
+---- Isan Provinces  ชาย	หญิง ----
+Kalasin 486824 495736
+Khon Kaen 885078 914438
+Chaiyaphum 562119 574142
+Nakhon Phanom 357965 359528
+Nakhon Ratchasima 1301227 1343118
+Bueng Kan 212470 210894
+Buriram 791909 801917
+Maha Sarakham 471742 490243
+Mukdahan 175326 175047
+Yasothon 268581 268384
+Roi Et 647776 656289
+Loei 321265 317693
+Sakon Nakhon 573750 578629
+Surin 695297 700129
+Sisaket 733730 737928
+Nong Khai 257617 259909
+Nong Bua Lamphu 255809 256432
+Udon Thani 782775 796330
+Ubon Ratchathani 935740 934811
+Amnat Charoen 782775 796330
