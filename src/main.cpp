@@ -56,6 +56,8 @@ void loop()
         if ((str_receive[index] == '\n')) // (|| str_receive[index] == ',' //! คิดว่าทำได้นะ) //!LF
         {
             //Serial.print("Received new angle: ");
+            //!hello world\n
+            //!hello world 0
             str_receive_length = index;
             str_receive[index - 1] = 0;
             //Serial.println(str_receive);
@@ -120,7 +122,7 @@ void loop()
         Serial.print("Woman :");
         Serial.println(Woman = atol(woman_Number));
 
-        //EEPROM WRITE
+        //EEPROM PUT
         for (int i = 0; i < name_index; i++)
         {
             data[data_point].pvname[i] = NameProvince_str[i];

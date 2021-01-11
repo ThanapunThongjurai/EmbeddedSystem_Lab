@@ -12,6 +12,8 @@ struct provinces {
 <-- ข้อมูล --> 
 ---- Isan Provinces  ชาย	หญิง ----
 Kalasin 486824 495736
+123456781234567
+8+7  = 15
 Khon Kaen 885078 914438
 Chaiyaphum 562119 574142
 Nakhon Phanom 357965 359528
