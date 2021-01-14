@@ -24,114 +24,56 @@ typedef struct
 
 ProVinces data[20];
 int data_point = 0;
-
+byte Count = 0;
+//TODO เลือกจำนวนจังหวัดที่ต้องการก่อร
 void setup()
 {
-    Serial.begin(9600); 
+    Serial.begin(9600);
     //!GET String
     index = 0;
 
-    Serial.println("Read custom object from EEPROM: ");
-    for (int i = 0; i < 20; i++)
-    {
-        ProVinces ProVincesGet;
-        EEPROM.get(addressOfEEPROM, ProVincesGet);
-        Serial.print(i+1);
-        Serial.print("\tPVNAME : ");
-        Serial.print(ProVincesGet.pvname);
-        Serial.print("\t\t\tmale : ");
-        Serial.print(ProVincesGet.male);
-        Serial.print("\tfemale : ");
-        Serial.println(ProVincesGet.female);
-        addressOfEEPROM = addressOfEEPROM + sizeof(ProVinces);
-    }
     addressOfEEPROM = 0;
+    while (Serial.available() == 0)
+    {
+        Count = Serial.parseInt();
+        Serial.println(Count);
+    }
 }
+
 void loop()
 {
     //!GET String
     if (Serial.available() > 0)
     {
-        str_receive[index] = Serial.read();
-        if ((str_receive[index] == '\n')) // (|| str_receive[index] == ',' //! คิดว่าทำได้นะ) //!LF
-        {
-            //Serial.print("Received new angle: ");
-            //!hello world\n
-            //!hello world 0
-            str_receive_length = index;
-            str_receive[index - 1] = 0;
-            //Serial.println(str_receive);
-            index = -1;
-            endtransmit = true;
-        }
-        index++;
-    }
-    if (endtransmit == true)
-    {
-        endtransmit = false;
-        Serial.println(str_receive);
-        // for (int i = 0; i < str_receive_length; i++)
-        //     Serial.print(str_receive[i]);
-        byte name_index = 0; //Name OF Provinces
-        byte between_Number = 0;
-        byte man_index = 0;
-        byte woman_index = 0;
-        for (int i = 1; i < str_receive_length - 1; i++)
-        {
-            //Name OF Provinces
-            if ((str_receive[i] == ' ') && (str_receive[i - 1] >= 'A') && (str_receive[i - 1] <= 'z') && (str_receive[i + 1] >= '0') && (str_receive[i + 1] <= '9'))
-                name_index = i;
-
-            if ((str_receive[i] == ' ') && (str_receive[i - 1] >= '0') && (str_receive[i - 1] <= '9') && (str_receive[i + 1] >= '0') && (str_receive[i + 1] <= '9'))
-                between_Number = i;
-            // if ((str_receive[i] == ' '))
-            //     Serial.print(" ");
-            // if ((str_receive[i] >= 'A') && (str_receive[i] <= 'z'))
-            //     Serial.print("C");
-            // if ((str_receive[i] >= '0') && (str_receive[i] <= '9'))
-            //     Serial.print("N");
-        }
-        //NameProvince
-        char NameProvince[name_index];
-        for (int i = 0; i < name_index; i++)
-        {
-            NameProvince[i] = str_receive[i];
-        }
-        String NameProvince_str = NameProvince;
-        Serial.println(NameProvince_str);
-
-        //ManNumber
-        man_index = name_index + 1;
-        char man_Number[between_Number - man_index + 1];
-        long Man = 0;
-        for (int i = man_index, j = 0; i < between_Number; i++, j++)
-        {
-            man_Number[j] = str_receive[i];
-        }
-        Serial.print("Man :");
-        Serial.println(Man = atol(man_Number));
-
-        //WomanNumber
-        woman_index = between_Number + 1;
-        char woman_Number[str_receive_length - between_Number + 1];
-        long Woman = 0;
-        for (int i = between_Number, j = 0; i < str_receive_length; i++, j++)
-        {
-            woman_Number[j] = str_receive[i];
-        }
-        Serial.print("Woman :");
-        Serial.println(Woman = atol(woman_Number));
-
-        //EEPROM PUT
-        for (int i = 0; i < name_index; i++)
-        {
-            data[data_point].pvname[i] = NameProvince_str[i];
-        }
-
-        data[data_point].male = Man;
-        data[data_point].female = Woman;
+        Serial.readBytesUntil('\t', data[data_point].pvname, 35);
+        data[data_point].male = Serial.parseInt();
+        data[data_point].female = Serial.parseInt();
+        // Serial.println(data[data_point].pvname);
+        // Serial.println(data[data_point].male);
+        // Serial.println(data[data_point].female);
+        // Serial.println(data[data_point].male + data[data_point].female);
         EEPROM.put(addressOfEEPROM, data[data_point]);
         data_point++;
         addressOfEEPROM = addressOfEEPROM + sizeof(ProVinces);
+    }
+    if (data_point == Count)
+    {
+        addressOfEEPROM = 0;
+        Serial.println("Read custom object from EEPROM: ");
+        for (int i = 0; i < data_point; i++)
+        {
+            ProVinces ProVincesGet;
+            EEPROM.get(addressOfEEPROM, ProVincesGet);
+            Serial.print(i + 1);
+            Serial.print("PVNAME : ");
+            Serial.println(ProVincesGet.pvname);
+            Serial.print("male : ");
+            Serial.print(ProVincesGet.male);
+            Serial.print("female : ");
+            Serial.print(ProVincesGet.female);
+            Serial.println();
+            addressOfEEPROM = addressOfEEPROM + sizeof(ProVinces);
+        }
+        Count = 0;
     }
 }

@@ -11,7 +11,7 @@ struct provinces {
 
 <-- ข้อมูล --> 
 ---- Isan Provinces  ชาย	หญิง ----
-Kalasin 486824 495736
+Kalasin486824 495736
 123456781234567
 8+7  = 15
 Khon Kaen 885078 914438
